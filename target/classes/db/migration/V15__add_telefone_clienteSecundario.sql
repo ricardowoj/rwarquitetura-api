@@ -1,0 +1,1 @@
+alter table rwarquitetura.tab_cliente_secundario add column telefone varchar (11) Default null ;
