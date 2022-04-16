@@ -142,15 +142,13 @@ public class ClienteSecundarioController {
 		clienteSecundario.setDhCadastro(LocalDateTime.now());
 		clienteSecundarioRepository.save(clienteSecundario);
 		
-		//Registrar Usuário
-		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-		
-		Usuario usuario = usuarioRepository.getOne(clienteSecundarioDTO.getUsuario().getId());
-		usuario.setEmail(clienteSecundarioDTO.getUsuario().getEmail());
-		if(clienteSecundarioDTO.getUsuario().getSenha() != null) {
-			usuario.setSenha(bCryptPasswordEncoder.encode(clienteSecundarioDTO.getUsuario().getSenha()));
+		if (clienteSecundarioDTO.getPassword() != null) {
+			BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+			Usuario usuario = usuarioRepository.getOne(clienteSecundarioDTO.getUsuario().getId());
+			usuario.setSenha(bCryptPasswordEncoder.encode(clienteSecundarioDTO.getPassword()));
+			usuarioRepository.save(usuario);
+			
 		}
-		usuarioRepository.save(usuario);
 		return ResponseEntity.ok(clienteSecundario);
 	}
 

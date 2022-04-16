@@ -20,6 +20,7 @@ public class ClienteSecundarioDTO {
 	private String complemento;
 	private String telefone;
 	private LocalDateTime dhCadastro;
+	private String password;
 
 	public Integer getIdArquiteto() {
 		return idArquiteto;
@@ -139,6 +140,14 @@ public class ClienteSecundarioDTO {
 
 	public void setDhCadastro(LocalDateTime dhCadastro) {
 		this.dhCadastro = dhCadastro;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }
