@@ -1,5 +1,6 @@
 package com.rwarquitetura.api.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -18,11 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rwarquitetura.api.exception.BusinessException;
-import com.rwarquitetura.api.model.EnderecoProjeto;
+import com.rwarquitetura.api.dto.ProjetoDTO;
+import com.rwarquitetura.api.model.ClienteSecundario;
 import com.rwarquitetura.api.model.Projeto;
 import com.rwarquitetura.api.repository.ClienteSecundarioRepository;
-import com.rwarquitetura.api.repository.EnderecoProjetoRepository;
 import com.rwarquitetura.api.repository.ProjetoRepository;
 
 @RestController
@@ -34,25 +34,32 @@ public class ProjetoController {
 	private ProjetoRepository projetoRepository;
 
 	@Autowired
-	private EnderecoProjetoRepository enderecoRepository;
-
-	@Autowired
 	private ClienteSecundarioRepository clienteSecundarioRepository;
 
 	@GetMapping
 	public List<Projeto> buscar() {
 		return projetoRepository.findAll();
 	}
+	
+	@GetMapping("/arquiteto/{id}")
+	public List<Projeto> buscarPorArquiteto(@PathVariable Integer id) {
+		return projetoRepository.findByIdArquiteto(id);
+	}
 
 	@PostMapping
-	public ResponseEntity<Projeto> salvar(@RequestBody Projeto projeto) {
-		
-		EnderecoProjeto enderecoProjetoBase = enderecoRepository.findOne(projeto.getEnderecoProjeto().getId());
-		if (enderecoProjetoBase == null) {
-			throw new BusinessException(String.format("Endereço de projeto não localizado: Id Endereço %s", projeto.getEnderecoProjeto().getId()));
-		} 
-		
-		projeto.setEnderecoProjeto(enderecoProjetoBase);
+	public ResponseEntity<Projeto> salvar(@RequestBody ProjetoDTO projetoDTO) {
+		ClienteSecundario clienteSecundarioBase = clienteSecundarioRepository.getOne(projetoDTO.getIdClienteSecundario());
+		Projeto projeto = new Projeto();
+		projeto.setCidade(projetoDTO.getCidade());
+		projeto.setEstado(projetoDTO.getEstado());
+		projeto.setRua(projetoDTO.getRua());
+		projeto.setNumero(projetoDTO.getNumero());
+		projeto.setBairro(projetoDTO.getBairro());
+		projeto.setCep(projetoDTO.getCep());
+		projeto.setComplemento(projetoDTO.getComplemento());
+		projeto.setDhCadastro(LocalDateTime.now());
+		projeto.setTipoProjeto(projetoDTO.getIdTipoProjeto());
+		projeto.setClienteSecundario(clienteSecundarioBase);
 		projetoRepository.save(projeto);
 		return ResponseEntity.ok(projeto);
 	}
@@ -88,8 +95,7 @@ public class ProjetoController {
 		if (projetoBase == null) {
 			return ResponseEntity.notFound().build();
 		} 
-
-		projetoBase.setEnderecoProjeto(projeto.getEnderecoProjeto());
+		
 		projetoBase.setTipoProjeto(projeto.getTipoProjeto());
 		
 		projetoRepository.save(projetoBase);

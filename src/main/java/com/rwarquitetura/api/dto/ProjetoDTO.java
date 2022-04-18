@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 
 public class ProjetoDTO {
 
-	private Integer idEnderecoProjeto;
+	private Integer idClienteSecundario;
 
 	private BigDecimal valorProjeto;
 
-	private Integer tipoProjeto;
+	private Integer idTipoProjeto;
 
 	private String cidade;
 
@@ -24,12 +24,12 @@ public class ProjetoDTO {
 
 	private String complemento;
 
-	public Integer getIdEnderecoProjeto() {
-		return idEnderecoProjeto;
+	public Integer getIdClienteSecundario() {
+		return idClienteSecundario;
 	}
 
-	public void setIdEnderecoProjeto(Integer idEnderecoProjeto) {
-		this.idEnderecoProjeto = idEnderecoProjeto;
+	public void setIdClienteSecundario(Integer idClienteSecundario) {
+		this.idClienteSecundario = idClienteSecundario;
 	}
 
 	public BigDecimal getValorProjeto() {
@@ -40,12 +40,12 @@ public class ProjetoDTO {
 		this.valorProjeto = valorProjeto;
 	}
 
-	public Integer getTipoProjeto() {
-		return tipoProjeto;
+	public Integer getIdTipoProjeto() {
+		return idTipoProjeto;
 	}
 
-	public void setTipoProjeto(Integer tipoProjeto) {
-		this.tipoProjeto = tipoProjeto;
+	public void setIdTipoProjeto(Integer idTipoProjeto) {
+		this.idTipoProjeto = idTipoProjeto;
 	}
 
 	public String getCidade() {

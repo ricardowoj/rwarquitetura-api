@@ -28,16 +28,8 @@ public class Projeto {
 	private Integer id;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "id_usuario")
-	private Usuario usuario;
-
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "id_cliente_secundario")
 	private ClienteSecundario clienteSecundario;
-
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "id_endereco_projeto")
-	private EnderecoProjeto enderecoProjeto;
 
 	@Column(name = "id_tipo_projeto")
 	private Integer tipoProjeto;
@@ -79,28 +71,12 @@ public class Projeto {
 		this.id = id;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
 	public ClienteSecundario getClienteSecundario() {
 		return clienteSecundario;
 	}
 
 	public void setClienteSecundario(ClienteSecundario clienteSecundario) {
 		this.clienteSecundario = clienteSecundario;
-	}
-
-	public EnderecoProjeto getEnderecoProjeto() {
-		return enderecoProjeto;
-	}
-
-	public void setEnderecoProjeto(EnderecoProjeto enderecoProjeto) {
-		this.enderecoProjeto = enderecoProjeto;
 	}
 
 	public Integer getTipoProjeto() {
