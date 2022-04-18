@@ -89,14 +89,24 @@ public class ProjetoController {
 	}
 
 	@PutMapping
-	public ResponseEntity<Projeto> atualizar(@Valid @RequestBody Projeto projeto) {
+	public ResponseEntity<Projeto> atualizar(@RequestBody ProjetoDTO projetoDTO) {
 		
-		Projeto projetoBase = projetoRepository.findOne(projeto.getId());
+		Projeto projetoBase = projetoRepository.findOne(projetoDTO.getId());
 		if (projetoBase == null) {
 			return ResponseEntity.notFound().build();
 		} 
+
+		projetoBase.setCidade(projetoDTO.getCidade());
+		projetoBase.setEstado(projetoDTO.getEstado());
+		projetoBase.setRua(projetoDTO.getRua());
+		projetoBase.setNumero(projetoDTO.getNumero());
+		projetoBase.setBairro(projetoDTO.getBairro());
+		projetoBase.setCep(projetoDTO.getCep());
+		projetoBase.setComplemento(projetoDTO.getComplemento());
+		projetoBase.setTipoProjeto(projetoDTO.getIdTipoProjeto());
 		
-		projetoBase.setTipoProjeto(projeto.getTipoProjeto());
+		ClienteSecundario clienteSecundarioBase = clienteSecundarioRepository.getOne(projetoDTO.getIdClienteSecundario());
+		projetoBase.setClienteSecundario(clienteSecundarioBase);
 		
 		projetoRepository.save(projetoBase);
 		return ResponseEntity.ok(projetoBase);

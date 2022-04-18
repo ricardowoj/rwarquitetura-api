@@ -3,6 +3,8 @@ package com.rwarquitetura.api.dto;
 import java.math.BigDecimal;
 
 public class ProjetoDTO {
+	
+	private Integer id;
 
 	private Integer idClienteSecundario;
 
@@ -23,6 +25,14 @@ public class ProjetoDTO {
 	private String cep;
 
 	private String complemento;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public Integer getIdClienteSecundario() {
 		return idClienteSecundario;
