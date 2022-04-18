@@ -1,0 +1,1 @@
+alter table rwarquitetura.tab_projeto add column id_tipo_caracteristica int Default null ;

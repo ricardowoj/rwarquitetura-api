@@ -3,8 +3,6 @@ package com.rwarquitetura.api.controller;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,6 +57,7 @@ public class ProjetoController {
 		projeto.setComplemento(projetoDTO.getComplemento());
 		projeto.setDhCadastro(LocalDateTime.now());
 		projeto.setTipoProjeto(projetoDTO.getIdTipoProjeto());
+		projeto.setTipoCaracteristica(projetoDTO.getIdTipoCaracteristica());
 		projeto.setClienteSecundario(clienteSecundarioBase);
 		projetoRepository.save(projeto);
 		return ResponseEntity.ok(projeto);
@@ -90,7 +89,6 @@ public class ProjetoController {
 
 	@PutMapping
 	public ResponseEntity<Projeto> atualizar(@RequestBody ProjetoDTO projetoDTO) {
-		
 		Projeto projetoBase = projetoRepository.findOne(projetoDTO.getId());
 		if (projetoBase == null) {
 			return ResponseEntity.notFound().build();
@@ -104,6 +102,7 @@ public class ProjetoController {
 		projetoBase.setCep(projetoDTO.getCep());
 		projetoBase.setComplemento(projetoDTO.getComplemento());
 		projetoBase.setTipoProjeto(projetoDTO.getIdTipoProjeto());
+		projetoBase.setTipoCaracteristica(projetoDTO.getIdTipoCaracteristica());
 		
 		ClienteSecundario clienteSecundarioBase = clienteSecundarioRepository.getOne(projetoDTO.getIdClienteSecundario());
 		projetoBase.setClienteSecundario(clienteSecundarioBase);

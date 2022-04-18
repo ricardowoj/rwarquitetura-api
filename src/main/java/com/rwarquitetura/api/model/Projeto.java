@@ -34,6 +34,9 @@ public class Projeto {
 	@Column(name = "id_tipo_projeto")
 	private Integer tipoProjeto;
 
+	@Column(name = "id_tipo_caracteristica")
+	private Integer tipoCaracteristica;
+
 	@Column(name = "vr_projeto")
 	private BigDecimal valor = BigDecimal.ZERO;
 
@@ -85,6 +88,14 @@ public class Projeto {
 
 	public void setTipoProjeto(Integer tipoProjeto) {
 		this.tipoProjeto = tipoProjeto;
+	}
+
+	public Integer getTipoCaracteristica() {
+		return tipoCaracteristica;
+	}
+
+	public void setTipoCaracteristica(Integer tipoCaracteristica) {
+		this.tipoCaracteristica = tipoCaracteristica;
 	}
 
 	public BigDecimal getValor() {

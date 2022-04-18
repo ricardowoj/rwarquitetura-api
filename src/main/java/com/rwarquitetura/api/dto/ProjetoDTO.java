@@ -11,6 +11,8 @@ public class ProjetoDTO {
 	private BigDecimal valorProjeto;
 
 	private Integer idTipoProjeto;
+	
+	private Integer idTipoCaracteristica;
 
 	private String cidade;
 
@@ -56,6 +58,14 @@ public class ProjetoDTO {
 
 	public void setIdTipoProjeto(Integer idTipoProjeto) {
 		this.idTipoProjeto = idTipoProjeto;
+	}
+
+	public Integer getIdTipoCaracteristica() {
+		return idTipoCaracteristica;
+	}
+
+	public void setIdTipoCaracteristica(Integer idTipoCaracteristica) {
+		this.idTipoCaracteristica = idTipoCaracteristica;
 	}
 
 	public String getCidade() {
