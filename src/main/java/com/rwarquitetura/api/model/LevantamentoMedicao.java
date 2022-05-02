@@ -28,6 +28,9 @@ public class LevantamentoMedicao {
 	@Column(name = "id_cliente_secundario")
 	private Integer idClienteSecundario;
 
+	@Column(name = "id_projeto")
+	private Integer idProjeto;
+
 	@JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
 	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
 	@Column(name = "dh_trabalhada_inicio", updatable = false)
@@ -58,6 +61,9 @@ public class LevantamentoMedicao {
 	@Column(name = "dh_cadastro", updatable = false)
 	private LocalDateTime dhCadastro;
 
+	@Column(name = "hr_trabalhada")
+	private String hrTrabalhada;
+
 	public Integer getId() {
 		return id;
 	}
@@ -84,6 +90,14 @@ public class LevantamentoMedicao {
 
 	public LocalDateTime getDhTrabalhadaInicio() {
 		return dhTrabalhadaInicio;
+	}
+
+	public Integer getIdProjeto() {
+		return idProjeto;
+	}
+
+	public void setIdProjeto(Integer idProjeto) {
+		this.idProjeto = idProjeto;
 	}
 
 	public void setDhTrabalhadaInicio(LocalDateTime dhTrabalhadaInicio) {
@@ -144,6 +158,14 @@ public class LevantamentoMedicao {
 
 	public void setDhCadastro(LocalDateTime dhCadastro) {
 		this.dhCadastro = dhCadastro;
+	}
+
+	public String getHrTrabalhada() {
+		return hrTrabalhada;
+	}
+
+	public void setHrTrabalhada(String hrTrabalhada) {
+		this.hrTrabalhada = hrTrabalhada;
 	}
 
 }
