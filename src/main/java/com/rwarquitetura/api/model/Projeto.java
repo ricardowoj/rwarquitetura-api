@@ -66,6 +66,14 @@ public class Projeto {
 	@Column(name = "dh_cadastro", updatable = false)
 	private LocalDateTime dhCadastro;
 
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "id_levan_briefing")
+	private LevantamentoBriefing levantamentoBriefing;
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "id_levan_medicao")
+	private LevantamentoMedicao levantamentoMedicao;
+
 	public Integer getId() {
 		return id;
 	}
@@ -168,6 +176,22 @@ public class Projeto {
 
 	public void setDhCadastro(LocalDateTime dhCadastro) {
 		this.dhCadastro = dhCadastro;
+	}
+
+	public LevantamentoBriefing getLevantamentoBriefing() {
+		return levantamentoBriefing;
+	}
+
+	public void setLevantamentoBriefing(LevantamentoBriefing levantamentoBriefing) {
+		this.levantamentoBriefing = levantamentoBriefing;
+	}
+
+	public LevantamentoMedicao getLevantamentoMedicao() {
+		return levantamentoMedicao;
+	}
+
+	public void setLevantamentoMedicao(LevantamentoMedicao levantamentoMedicao) {
+		this.levantamentoMedicao = levantamentoMedicao;
 	}
 
 }

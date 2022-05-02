@@ -22,28 +22,26 @@ public class LevantamentoBriefing {
 	@Column(name = "id")
 	private Integer id;
 
-
 	@Column(name = "id_usuario")
 	private Integer idUsuario;
-
 
 	@Column(name = "id_arquieto")
 	private Integer idArquiteto;
 
+	@Column(name = "id_projeto")
+	private Integer idProjeto;
 
 	@Column(name = "id_cliente_secundario")
 	private Integer idClienteSecundario;
 
-
 	@JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
 	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-	@Column(name = "dh_trabalhada_inicio", updatable = false)
+	@Column(name = "dh_trabalhada_inicio")
 	private LocalDateTime dhTrabalhadaInicio;
 
-
 	@JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
 	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-	@Column(name = "dh_trabalhada_fim", updatable = false)
+	@Column(name = "dh_trabalhada_fim")
 	private LocalDateTime dhTrabalhadaFim;
 
 	@Column(name = "caminho_arquivo")
@@ -61,11 +59,13 @@ public class LevantamentoBriefing {
 	@Column(name = "observacao")
 	private String observacao;
 
-
 	@JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
 	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
 	@Column(name = "dh_cadastro", updatable = false)
 	private LocalDateTime dhCadastro;
+
+	@Column(name = "hr_trabalhada")
+	private String hrTrabalhada;
 
 	public Integer getId() {
 		return id;
@@ -89,6 +89,14 @@ public class LevantamentoBriefing {
 
 	public void setIdArquiteto(Integer idArquiteto) {
 		this.idArquiteto = idArquiteto;
+	}
+
+	public Integer getIdProjeto() {
+		return idProjeto;
+	}
+
+	public void setIdProjeto(Integer idProjeto) {
+		this.idProjeto = idProjeto;
 	}
 
 	public Integer getIdClienteSecundario() {
@@ -161,6 +169,14 @@ public class LevantamentoBriefing {
 
 	public void setDhCadastro(LocalDateTime dhCadastro) {
 		this.dhCadastro = dhCadastro;
+	}
+
+	public String getHrTrabalhada() {
+		return hrTrabalhada;
+	}
+
+	public void setHrTrabalhada(String hrTrabalhada) {
+		this.hrTrabalhada = hrTrabalhada;
 	}
 
 }
