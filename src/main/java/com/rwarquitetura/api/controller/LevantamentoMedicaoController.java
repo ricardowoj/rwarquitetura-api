@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import com.rwarquitetura.api.model.LevantamentoBriefing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -113,7 +114,12 @@ public class LevantamentoMedicaoController {
 	
 	@GetMapping("/projeto/{id}")
 	public List<LevantamentoMedicao> buscarPorProjeto(@PathVariable Integer id) {
-		List<LevantamentoMedicao> medicao = levantamentoMedicaoRepository.findByIdProjeto(id);
-		return medicao;
+		return levantamentoMedicaoRepository.findByIdProjeto(id);
+	}
+
+	@PostMapping("/remover/{id}")
+	public void remover(@PathVariable Integer id) {
+		LevantamentoMedicao levantamentoMedicao = levantamentoMedicaoRepository.getOne(id);
+		levantamentoMedicaoRepository.delete(levantamentoMedicao);
 	}
 }

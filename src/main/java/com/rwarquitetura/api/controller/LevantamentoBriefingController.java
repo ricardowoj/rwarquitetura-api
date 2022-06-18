@@ -119,4 +119,10 @@ public class LevantamentoBriefingController {
 	public List<LevantamentoBriefing> buscarPorProjeto(@PathVariable Integer id) {
 		return levantamentoBriefingRepository.findByIdProjeto(id);
 	}
+
+	@PostMapping("/remover/{id}")
+	public void remover(@PathVariable Integer id) {
+		LevantamentoBriefing levantamentoBriefing = levantamentoBriefingRepository.getOne(id);
+		levantamentoBriefingRepository.delete(levantamentoBriefing);
+	}
 }
