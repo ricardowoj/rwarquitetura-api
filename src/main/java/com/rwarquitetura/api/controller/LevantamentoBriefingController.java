@@ -117,7 +117,6 @@ public class LevantamentoBriefingController {
 
 	@GetMapping("/projeto/{id}")
 	public List<LevantamentoBriefing> buscarPorProjeto(@PathVariable Integer id) {
-		List<LevantamentoBriefing> brifrieng = levantamentoBriefingRepository.findByIdProjeto(id);
-		return brifrieng;
+		return levantamentoBriefingRepository.findByIdProjeto(id);
 	}
 }

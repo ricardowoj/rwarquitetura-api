@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.rwarquitetura.api.dto.ArquitetoDTO;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -25,164 +26,182 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "tab_arquiteto")
 public class Arquiteto {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_usuario")
-	private Usuario usuario;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
 
-	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "arquiteto", orphanRemoval = false)
-	private List<ClienteSecundario> clienteSecundario = new ArrayList<ClienteSecundario>();
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "arquiteto", orphanRemoval = false)
+    private List<ClienteSecundario> clienteSecundario = new ArrayList<ClienteSecundario>();
 
-	@Column(name = "nome")
-	private String nome;
+    @Column(name = "nome")
+    private String nome;
 
-	@Column(name = "id_tipo_documento")
-	private Integer tipoDocumento;
+    @Column(name = "id_tipo_documento")
+    private Integer tipoDocumento;
 
-	@Column(name = "numero_doc")
-	private String numeroDoc;
+    @Column(name = "numero_doc")
+    private String numeroDoc;
 
-	@Column(name = "cidade")
-	private String cidade;
+    @Column(name = "cidade")
+    private String cidade;
 
-	@Column(name = "estado")
-	private String estado;
+    @Column(name = "estado")
+    private String estado;
 
-	@Column(name = "rua")
-	private String rua;
+    @Column(name = "rua")
+    private String rua;
 
-	@Column(name = "numero")
-	private String numero;
+    @Column(name = "numero")
+    private String numero;
 
-	@Column(name = "bairro")
-	private String bairro;
+    @Column(name = "bairro")
+    private String bairro;
 
-	@Column(name = "cep")
-	private String cep;
+    @Column(name = "cep")
+    private String cep;
 
-	@Column(name = "complemento")
-	private String complemento;
+    @Column(name = "complemento")
+    private String complemento;
 
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-	@Column(name = "dh_cadastro")
-	private LocalDateTime dhCadastro;
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    @Column(name = "dh_cadastro")
+    private LocalDateTime dhCadastro;
 
-	public Integer getId() {
-		return id;
-	}
+    public Arquiteto() {
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Arquiteto(Usuario usuarioBase, ArquitetoDTO arquitetoDTO) {
+        this.usuario = usuarioBase;
+        this.nome = arquitetoDTO.getNome();
+        this.tipoDocumento = arquitetoDTO.getTipoDocumento();
+        this.numeroDoc = arquitetoDTO.getNumeroDoc();
+        this.cidade = arquitetoDTO.getCidade();
+        this.estado = arquitetoDTO.getEstado();
+        this.rua = arquitetoDTO.getRua();
+        this.numero = arquitetoDTO.getNumero();
+        this.bairro = arquitetoDTO.getBairro();
+        this.cep = arquitetoDTO.getCep();
+        this.complemento = arquitetoDTO.getComplemento();
+        this.dhCadastro = LocalDateTime.now();
+    }
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public List<ClienteSecundario> getClienteSecundario() {
-		return clienteSecundario;
-	}
+    public Usuario getUsuario() {
+        return usuario;
+    }
 
-	public void setClienteSecundario(List<ClienteSecundario> clienteSecundario) {
-		this.clienteSecundario = clienteSecundario;
-	}
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 
-	public String getNome() {
-		return nome;
-	}
+    public List<ClienteSecundario> getClienteSecundario() {
+        return clienteSecundario;
+    }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public void setClienteSecundario(List<ClienteSecundario> clienteSecundario) {
+        this.clienteSecundario = clienteSecundario;
+    }
 
-	public Integer getTipoDocumento() {
-		return tipoDocumento;
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	public void setTipoDocumento(Integer tipoDocumento) {
-		this.tipoDocumento = tipoDocumento;
-	}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	public String getNumeroDoc() {
-		return numeroDoc;
-	}
+    public Integer getTipoDocumento() {
+        return tipoDocumento;
+    }
 
-	public void setNumeroDoc(String numeroDoc) {
-		this.numeroDoc = numeroDoc;
-	}
+    public void setTipoDocumento(Integer tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
 
-	public String getCidade() {
-		return cidade;
-	}
+    public String getNumeroDoc() {
+        return numeroDoc;
+    }
 
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
-	}
+    public void setNumeroDoc(String numeroDoc) {
+        this.numeroDoc = numeroDoc;
+    }
 
-	public String getEstado() {
-		return estado;
-	}
+    public String getCidade() {
+        return cidade;
+    }
 
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
 
-	public String getRua() {
-		return rua;
-	}
+    public String getEstado() {
+        return estado;
+    }
 
-	public void setRua(String rua) {
-		this.rua = rua;
-	}
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 
-	public String getNumero() {
-		return numero;
-	}
+    public String getRua() {
+        return rua;
+    }
 
-	public void setNumero(String numero) {
-		this.numero = numero;
-	}
+    public void setRua(String rua) {
+        this.rua = rua;
+    }
 
-	public String getBairro() {
-		return bairro;
-	}
+    public String getNumero() {
+        return numero;
+    }
 
-	public void setBairro(String bairro) {
-		this.bairro = bairro;
-	}
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
 
-	public String getCep() {
-		return cep;
-	}
+    public String getBairro() {
+        return bairro;
+    }
 
-	public void setCep(String cep) {
-		this.cep = cep;
-	}
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
 
-	public String getComplemento() {
-		return complemento;
-	}
+    public String getCep() {
+        return cep;
+    }
 
-	public void setComplemento(String complemento) {
-		this.complemento = complemento;
-	}
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
 
-	public LocalDateTime getDhCadastro() {
-		return dhCadastro;
-	}
+    public String getComplemento() {
+        return complemento;
+    }
 
-	public void setDhCadastro(LocalDateTime dhCadastro) {
-		this.dhCadastro = dhCadastro;
-	}
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
+    }
+
+    public LocalDateTime getDhCadastro() {
+        return dhCadastro;
+    }
+
+    public void setDhCadastro(LocalDateTime dhCadastro) {
+        this.dhCadastro = dhCadastro;
+    }
 
 }

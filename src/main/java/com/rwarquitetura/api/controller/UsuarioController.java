@@ -127,7 +127,7 @@ public class UsuarioController {
 		
 		//Validação campo vazio
 		if (usuarioEditarDTO.getEmail() == "" || usuarioEditarDTO.getEmail() == null) {
-			throw new BusinessException(String.format("E-mail nulo não é permitido"));
+			throw new BusinessException("E-mail nulo não é permitido");
 		}
 		
 		//Sem alteração de e-mail

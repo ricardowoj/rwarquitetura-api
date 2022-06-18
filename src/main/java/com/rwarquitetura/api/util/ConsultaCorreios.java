@@ -8,7 +8,7 @@ import java.net.URL;
 import com.google.gson.Gson;
 import com.rwarquitetura.api.dto.EnderecoDTO;
 
-public class Api {
+public class ConsultaCorreios {
 	
 	public static EnderecoDTO buscarCep(String cepDTO) throws Exception {
 	    String webService = "https://viacep.com.br/ws/";

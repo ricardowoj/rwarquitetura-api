@@ -1,0 +1,123 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.rwarquitetura.api.security.cors.MdwApiProperty",
+      "name": "mdw",
+      "type": "com.rwarquitetura.api.security.cors.MdwApiProperty"
+    },
+    {
+      "sourceType": "com.rwarquitetura.api.security.cors.MdwApiProperty",
+      "name": "mdw.seguranca",
+      "sourceMethod": "getSeguranca()",
+      "type": "com.rwarquitetura.api.security.cors.MdwApiProperty$Seguranca"
+    }
+  ],
+  "properties": [
+    {
+      "name": "bezkoder.app.jwtExpirationMs",
+      "description": "A description for 'bezkoder.app.jwtExpirationMs'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "bezkoder.app.jwtSecret",
+      "description": "A description for 'bezkoder.app.jwtSecret'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "datasource.flyway.driver-class-name",
+      "description": "A description for 'datasource.flyway.driver-class-name'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "datasource.flyway.password",
+      "description": "A description for 'datasource.flyway.password'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "datasource.flyway.url",
+      "description": "A description for 'datasource.flyway.url'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "datasource.flyway.username",
+      "description": "A description for 'datasource.flyway.username'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "flyway.baseline-on-migrate",
+      "description": "A description for 'flyway.baseline-on-migrate'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "jwt.secret",
+      "description": "A description for 'jwt.secret'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "jwttoken.expiration",
+      "description": "A description for 'jwttoken.expiration'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "jwttoken.secret",
+      "description": "A description for 'jwttoken.secret'",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.rwarquitetura.api.security.cors.MdwApiProperty",
+      "name": "mdw.origin-permitida",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "rwarquitetura.app.jwtExpirationMs",
+      "description": "A description for 'rwarquitetura.app.jwtExpirationMs'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "rwarquitetura.app.jwtSecret",
+      "description": "A description for 'rwarquitetura.app.jwtSecret'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "spring.batch.initialize-schema",
+      "description": "A description for 'spring.batch.initialize-schema'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "spring.flyway.baseline-on-migrate",
+      "description": "A description for 'spring.flyway.baseline-on-migrate'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "spring.flyway.baselineOnMigrate",
+      "description": "A description for 'spring.flyway.baselineOnMigrate'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "spring.flyway.enabled",
+      "description": "A description for 'spring.flyway.enabled'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "spring.flyway.locations",
+      "description": "A description for 'spring.flyway.locations'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "spring.flyway.schemas",
+      "description": "A description for 'spring.flyway.schemas'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "spring.jpa.hibernate.dialect",
+      "description": "A description for 'spring.jpa.hibernate.dialect'",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "spring.jpa.hibernate.naming_strategy",
+      "description": "A description for 'spring.jpa.hibernate.naming_strategy'",
+      "type": "java.lang.String"
+    }
+  ]
+}

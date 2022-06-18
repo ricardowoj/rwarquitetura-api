@@ -55,78 +55,63 @@ public class ClienteSecundarioController {
 
 	@GetMapping("/arquiteto/{id}")
 	public List<ClienteSecundario> buscarPorArquiteto(@PathVariable Integer id) {
-		List<ClienteSecundario> clientes = clienteSecundarioRepository.findByIdArquiteto(id);
-		return clientes;
+		return clienteSecundarioRepository.findByIdArquiteto(id);
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<ClienteSecundario> salvar(@RequestBody ClienteSecundarioDTO clienteSecundarioDTO) {
-		//Registrar CLiente Secundário
 		Arquiteto arquitetoBase = arquitetoRepository.findOne(clienteSecundarioDTO.getIdArquiteto());
-		ClienteSecundario clienteSecundario = new ClienteSecundario();
-		clienteSecundario.setArquiteto(arquitetoBase);
-		clienteSecundario.setNome(clienteSecundarioDTO.getNome());
-		clienteSecundario.setTipoDocumento(clienteSecundarioDTO.getTipoDocumento());
-		clienteSecundario.setNumeroDoc(clienteSecundarioDTO.getNumeroDoc());
-		clienteSecundario.setCidade(clienteSecundarioDTO.getCidade());
-		clienteSecundario.setEstado(clienteSecundarioDTO.getEstado());
-		clienteSecundario.setRua(clienteSecundarioDTO.getRua());
-		clienteSecundario.setNumero(clienteSecundarioDTO.getNumero());
-		clienteSecundario.setBairro(clienteSecundarioDTO.getBairro());
-		clienteSecundario.setCep(clienteSecundarioDTO.getCep());
-		clienteSecundario.setComplemento(clienteSecundarioDTO.getComplemento());
-		clienteSecundario.setTelefone(clienteSecundarioDTO.getTelefone());
-		clienteSecundario.setDhCadastro(LocalDateTime.now());
-		
-		//Registrar Usuário
+		ClienteSecundario clienteSecundario = new ClienteSecundario(arquitetoBase, clienteSecundarioDTO);
+
+		Usuario usuarioBase = prepararNovoUsuario(clienteSecundarioDTO);
+		clienteSecundario.setUsuario(usuarioBase);
+		clienteSecundarioRepository.save(clienteSecundario);
+
+		return ResponseEntity.ok(clienteSecundario);
+	}
+
+	private Usuario prepararNovoUsuario(ClienteSecundarioDTO clienteSecundarioDTO) {
 		Usuario usuario = new Usuario();
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		usuario.setSenha(bCryptPasswordEncoder.encode("123456"));
-		
-		usuario.setDhCadastro(LocalDateTime.now()); 
+		usuario.setDhCadastro(LocalDateTime.now());
 		usuario.setTipoStatus(TipoStatus.ATIVO.getId());
 		usuario.setTipoUsuario(TipoUsuario.CLIENTE_SECUNDARIO.getId());
 		usuario.setEmail(clienteSecundarioDTO.getUsuario().getEmail());
-		
+
 		Permissao permissao = permissaoRepository.findByDescricao("ROLE_GERENCIAR_CLIENTE");
 		List<Permissao> permissoes = new ArrayList<Permissao>();
 		permissoes.add(permissao);
 		usuario.setPermissoes(permissoes);
-		
-		Usuario usuarioBase = usuarioRepository.save(usuario);
-		clienteSecundario.setUsuario(usuarioBase);
-		clienteSecundarioRepository.save(clienteSecundario);
-		return ResponseEntity.ok(clienteSecundario);
+
+		return usuarioRepository.save(usuario);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ClienteSecundario> buscarPorId(@PathVariable Integer id) {
-
 		ClienteSecundario clienteSecundarioBase = clienteSecundarioRepository.findOne(id);
 		if (clienteSecundarioBase == null) {
 			return ResponseEntity.notFound().build();
-		} else {
-			return ResponseEntity.ok(clienteSecundarioBase);
 		}
+
+		return ResponseEntity.ok(clienteSecundarioBase);
 	}
 
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<ClienteSecundario> remover(@PathVariable Integer id) {
-
 		ClienteSecundario clienteSecundarioBase = clienteSecundarioRepository.findOne(id);
 		if (clienteSecundarioBase == null) {
 			return ResponseEntity.notFound().build();
-		} else {
-			clienteSecundarioRepository.delete(id);
-			return ResponseEntity.ok().build();
 		}
+
+		clienteSecundarioRepository.delete(id);
+		return ResponseEntity.ok().build();
 	}
 
 	@PutMapping
 	public ResponseEntity<ClienteSecundario> editar(@RequestBody ClienteSecundarioDTO clienteSecundarioDTO) {
-		//Registrar CLiente Secundário
 		ClienteSecundario clienteSecundario = clienteSecundarioRepository.getOne(clienteSecundarioDTO.getId());
 		clienteSecundario.setNome(clienteSecundarioDTO.getNome());
 		clienteSecundario.setTipoDocumento(clienteSecundarioDTO.getTipoDocumento());
@@ -147,7 +132,6 @@ public class ClienteSecundarioController {
 			Usuario usuario = usuarioRepository.getOne(clienteSecundarioDTO.getUsuario().getId());
 			usuario.setSenha(bCryptPasswordEncoder.encode(clienteSecundarioDTO.getPassword()));
 			usuarioRepository.save(usuario);
-			
 		}
 		return ResponseEntity.ok(clienteSecundario);
 	}
