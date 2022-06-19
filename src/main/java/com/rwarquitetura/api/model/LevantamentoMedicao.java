@@ -1,5 +1,6 @@
 package com.rwarquitetura.api.model;
 
+import java.io.File;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -41,6 +42,9 @@ public class LevantamentoMedicao {
 	@Column(name = "dh_trabalhada_fim", updatable = false)
 	private LocalDateTime dhTrabalhadaFim;
 
+	@Column(name = "nome")
+	private String nome;
+
 	@Column(name = "caminho_arquivo")
 	private String caminhoArquivo;
 
@@ -63,6 +67,20 @@ public class LevantamentoMedicao {
 
 	@Column(name = "hr_trabalhada")
 	private String hrTrabalhada;
+
+	public LevantamentoMedicao() {
+	}
+
+	public LevantamentoMedicao(Projeto projeto, File arquivoSalvo) {
+		this.idProjeto = projeto.getId();
+		this.idArquiteto = projeto.getClienteSecundario().getId();
+		this.idClienteSecundario = projeto.getClienteSecundario().getId();
+		this.nomeArquivo = arquivoSalvo.getName();
+		this.caminhoArquivo = arquivoSalvo.getAbsolutePath();
+		this.tamanhoArquivo = arquivoSalvo.length();
+		this.flArquivoPresente = true;
+		this.dhCadastro = LocalDateTime.now();
+	}
 
 	public Integer getId() {
 		return id;
@@ -110,6 +128,14 @@ public class LevantamentoMedicao {
 
 	public void setDhTrabalhadaFim(LocalDateTime dhTrabalhadaFim) {
 		this.dhTrabalhadaFim = dhTrabalhadaFim;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public String getCaminhoArquivo() {

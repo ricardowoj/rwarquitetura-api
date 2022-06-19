@@ -1,6 +1,21 @@
 package com.rwarquitetura.api.controller;
 
-import java.io.File;
+import com.rwarquitetura.api.exception.BusinessException;
+import com.rwarquitetura.api.model.LevantamentoBriefing;
+import com.rwarquitetura.api.model.Projeto;
+import com.rwarquitetura.api.repository.ClienteSecundarioRepository;
+import com.rwarquitetura.api.repository.LevantamentoBriefingRepository;
+import com.rwarquitetura.api.repository.ProjetoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,23 +24,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.rwarquitetura.api.exception.BusinessException;
-import com.rwarquitetura.api.model.LevantamentoBriefing;
-import com.rwarquitetura.api.model.Projeto;
-import com.rwarquitetura.api.repository.ClienteSecundarioRepository;
-import com.rwarquitetura.api.repository.LevantamentoBriefingRepository;
-import com.rwarquitetura.api.repository.ProjetoRepository;
 
 @RestController
 @RequestMapping("/levantamentoBriefing")
@@ -49,26 +47,24 @@ public class LevantamentoBriefingController {
 			@RequestParam("nomeBriefing")  String nomeBriefing) throws Exception {
 
 		try {
-			LevantamentoBriefing briefing = new LevantamentoBriefing();
 			Projeto projeto = projetoRepository.getOne(idProjeto);
-			briefing.setIdProjeto(projeto.getId());
-			briefing.setIdClienteSecundario(projeto.getClienteSecundario().getId());
-			briefing.setIdArquiteto(projeto.getClienteSecundario().getArquiteto().getId());
+			if(!arquivo.getOriginalFilename().endsWith("pdf")) {
+				throw new BusinessException("Suporte somente para arquivo PDF");
+			}
+
+			File arquivoSalvo = salvarNoDisco(arquivo);
 			
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"); 
 			LocalDateTime localDateTimeInicio = LocalDateTime.parse(dataHoraInicioBriefing, formatter);
 			LocalDateTime localDateTimeFim= LocalDateTime.parse(dataHoraFimBriefing, formatter);
+			String horaTrabalhada = getDuracao(localDateTimeInicio, localDateTimeFim);
+
+			LevantamentoBriefing briefing = new LevantamentoBriefing(projeto, arquivoSalvo);
 			briefing.setDhTrabalhadaInicio(localDateTimeInicio);
 			briefing.setDhTrabalhadaFim(localDateTimeFim);
-			String horaTrabalhada = getDuracao(localDateTimeInicio, localDateTimeFim);
 			briefing.setHrTrabalhada(horaTrabalhada);
-			
-			File arquivoSalvo = salvarNoDisco(arquivo);
-			briefing.setCaminhoArquivo(arquivoSalvo.getAbsolutePath());
-			briefing.setNomeArquivo(nomeBriefing);
-			briefing.setTamanhoArquivo(arquivoSalvo.length());
-			briefing.setFlArquivoPresente(true);
-			briefing.setDhCadastro(LocalDateTime.now());
+			briefing.setNome(nomeBriefing);
+
 			levantamentoBriefingRepository.save(briefing);
 		} catch (Exception e) {
 			throw new BusinessException(String.format("Erro ao gravar Briefing %s", e.getMessage()));
@@ -124,5 +120,24 @@ public class LevantamentoBriefingController {
 	public void remover(@PathVariable Integer id) {
 		LevantamentoBriefing levantamentoBriefing = levantamentoBriefingRepository.getOne(id);
 		levantamentoBriefingRepository.delete(levantamentoBriefing);
+	}
+
+	@GetMapping("/download/{id}")
+	public void donwload(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		LevantamentoBriefing levantamentoBriefing = levantamentoBriefingRepository.getOne(id);
+		File file = new File(levantamentoBriefing.getCaminhoArquivo());
+		if (file.exists()) {
+			String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+			if (mimeType == null) {
+				mimeType = "application/octet-stream";
+			}
+
+			response.setContentType(mimeType);
+			response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() + "\""));
+			response.setContentLength((int) file.length());
+
+			InputStream inputStream = new BufferedInputStream(Files.newInputStream(file.toPath()));
+			FileCopyUtils.copy(inputStream, response.getOutputStream());
+		}
 	}
 }

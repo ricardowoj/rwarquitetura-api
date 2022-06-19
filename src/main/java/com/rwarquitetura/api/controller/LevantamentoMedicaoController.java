@@ -1,6 +1,10 @@
 package com.rwarquitetura.api.controller;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,6 +17,7 @@ import java.util.List;
 import com.rwarquitetura.api.model.LevantamentoBriefing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +31,9 @@ import com.rwarquitetura.api.model.LevantamentoMedicao;
 import com.rwarquitetura.api.model.Projeto;
 import com.rwarquitetura.api.repository.LevantamentoMedicaoRepository;
 import com.rwarquitetura.api.repository.ProjetoRepository;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/levantamentoMedicao")
@@ -46,26 +54,28 @@ public class LevantamentoMedicaoController {
 			@RequestParam("nomeMedicao")  String nomeMedicao) throws Exception {
 
 		try {
-			LevantamentoMedicao medicao = new LevantamentoMedicao();
 			Projeto projeto = projetoRepository.getOne(idProjeto);
-			medicao.setIdProjeto(projeto.getId());
-			medicao.setIdClienteSecundario(projeto.getClienteSecundario().getId());
-			medicao.setIdArquiteto(projeto.getClienteSecundario().getArquiteto().getId());
+			if(!arquivo.getOriginalFilename().endsWith("pdf")) {
+				throw new BusinessException("| Suporte somente para arquivo PDF");
+			}
+
+			File arquivoSalvo = salvarNoDisco(arquivo);
 			
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"); 
 			LocalDateTime localDateTimeInicio = LocalDateTime.parse(dataHoraInicioMedicao, formatter);
 			LocalDateTime localDateTimeFim= LocalDateTime.parse(dataHoraFimMedicao, formatter);
+			String horaTrabalhada = getDuracao(localDateTimeInicio, localDateTimeFim);
+
+			LevantamentoMedicao medicao = new LevantamentoMedicao(projeto, arquivoSalvo);
 			medicao.setDhTrabalhadaInicio(localDateTimeInicio);
 			medicao.setDhTrabalhadaFim(localDateTimeFim);
-			String horaTrabalhada = getDuracao(localDateTimeInicio, localDateTimeFim);
+
 			medicao.setHrTrabalhada(horaTrabalhada);
-			
-			File arquivoSalvo = salvarNoDisco(arquivo);
-			medicao.setCaminhoArquivo(arquivoSalvo.getAbsolutePath());
-			medicao.setNomeArquivo(nomeMedicao);
-			medicao.setTamanhoArquivo(arquivoSalvo.length());
-			medicao.setFlArquivoPresente(true);
-			medicao.setDhCadastro(LocalDateTime.now());
+			medicao.setDhTrabalhadaInicio(localDateTimeInicio);
+			medicao.setDhTrabalhadaFim(localDateTimeFim);
+			medicao.setHrTrabalhada(horaTrabalhada);
+			medicao.setNome(nomeMedicao);
+
 			levantamentoMedicaoRepository.save(medicao);
 		} catch (Exception e) {
 			throw new BusinessException(String.format("Erro ao gravar Medição %s", e.getMessage()));
@@ -121,5 +131,24 @@ public class LevantamentoMedicaoController {
 	public void remover(@PathVariable Integer id) {
 		LevantamentoMedicao levantamentoMedicao = levantamentoMedicaoRepository.getOne(id);
 		levantamentoMedicaoRepository.delete(levantamentoMedicao);
+	}
+
+	@GetMapping("/download/{id}")
+	public void donwload(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		LevantamentoMedicao levantamentoMedicao = levantamentoMedicaoRepository.getOne(id);
+		File file = new File(levantamentoMedicao.getCaminhoArquivo());
+		if (file.exists()) {
+			String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+			if (mimeType == null) {
+				mimeType = "application/octet-stream";
+			}
+
+			response.setContentType(mimeType);
+			response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() + "\""));
+			response.setContentLength((int) file.length());
+
+			InputStream inputStream = new BufferedInputStream(Files.newInputStream(file.toPath()));
+			FileCopyUtils.copy(inputStream, response.getOutputStream());
+		}
 	}
 }

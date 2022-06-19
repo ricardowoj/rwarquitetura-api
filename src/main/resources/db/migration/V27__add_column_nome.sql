@@ -1,0 +1,1 @@
+alter table rwarquitetura.tab_levantamento_medicao add column nome varchar(255)  DEFAULT NULL;

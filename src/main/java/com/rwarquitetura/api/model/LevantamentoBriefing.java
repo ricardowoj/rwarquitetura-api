@@ -1,5 +1,6 @@
 package com.rwarquitetura.api.model;
 
+import java.io.File;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -17,166 +18,190 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Table(name = "tab_levantamento_briefing")
 public class LevantamentoBriefing {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
 
-	@Column(name = "id_usuario")
-	private Integer idUsuario;
+    @Column(name = "id_usuario")
+    private Integer idUsuario;
 
-	@Column(name = "id_arquieto")
-	private Integer idArquiteto;
+    @Column(name = "id_arquieto")
+    private Integer idArquiteto;
 
-	@Column(name = "id_projeto")
-	private Integer idProjeto;
+    @Column(name = "id_projeto")
+    private Integer idProjeto;
 
-	@Column(name = "id_cliente_secundario")
-	private Integer idClienteSecundario;
+    @Column(name = "id_cliente_secundario")
+    private Integer idClienteSecundario;
 
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-	@Column(name = "dh_trabalhada_inicio")
-	private LocalDateTime dhTrabalhadaInicio;
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    @Column(name = "dh_trabalhada_inicio")
+    private LocalDateTime dhTrabalhadaInicio;
 
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-	@Column(name = "dh_trabalhada_fim")
-	private LocalDateTime dhTrabalhadaFim;
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    @Column(name = "dh_trabalhada_fim")
+    private LocalDateTime dhTrabalhadaFim;
 
-	@Column(name = "caminho_arquivo")
-	private String caminhoArquivo;
+    @Column(name = "nome")
+    private String nome;
 
-	@Column(name = "nome_arquivo")
-	private String nomeArquivo;
+    @Column(name = "caminho_arquivo")
+    private String caminhoArquivo;
 
-	@Column(name = "tamanho_arquivo")
-	private Long tamanhoArquivo;
+    @Column(name = "nome_arquivo")
+    private String nomeArquivo;
 
-	@Column(name = "fl_arquivo_presente")
-	private boolean flArquivoPresente;
+    @Column(name = "tamanho_arquivo")
+    private Long tamanhoArquivo;
 
-	@Column(name = "observacao")
-	private String observacao;
+    @Column(name = "fl_arquivo_presente")
+    private boolean flArquivoPresente;
 
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-	@Column(name = "dh_cadastro", updatable = false)
-	private LocalDateTime dhCadastro;
+    @Column(name = "observacao")
+    private String observacao;
 
-	@Column(name = "hr_trabalhada")
-	private String hrTrabalhada;
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    @Column(name = "dh_cadastro", updatable = false)
+    private LocalDateTime dhCadastro;
 
-	public Integer getId() {
-		return id;
-	}
+    @Column(name = "hr_trabalhada")
+    private String hrTrabalhada;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public LevantamentoBriefing() {
+    }
 
-	public Integer getIdUsuario() {
-		return idUsuario;
-	}
+    public LevantamentoBriefing(Projeto projeto, File arquivoSalvo) {
+        this.idProjeto = projeto.getId();
+        this.idArquiteto = projeto.getClienteSecundario().getId();
+        this.idClienteSecundario = projeto.getClienteSecundario().getId();
+        this.nomeArquivo = arquivoSalvo.getName();
+        this.caminhoArquivo = arquivoSalvo.getAbsolutePath();
+        this.tamanhoArquivo = arquivoSalvo.length();
+        this.flArquivoPresente = true;
+        this.dhCadastro = LocalDateTime.now();
+    }
 
-	public void setIdUsuario(Integer idUsuario) {
-		this.idUsuario = idUsuario;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Integer getIdArquiteto() {
-		return idArquiteto;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setIdArquiteto(Integer idArquiteto) {
-		this.idArquiteto = idArquiteto;
-	}
+    public Integer getIdUsuario() {
+        return idUsuario;
+    }
 
-	public Integer getIdProjeto() {
-		return idProjeto;
-	}
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 
-	public void setIdProjeto(Integer idProjeto) {
-		this.idProjeto = idProjeto;
-	}
+    public Integer getIdArquiteto() {
+        return idArquiteto;
+    }
 
-	public Integer getIdClienteSecundario() {
-		return idClienteSecundario;
-	}
+    public void setIdArquiteto(Integer idArquiteto) {
+        this.idArquiteto = idArquiteto;
+    }
 
-	public void setIdClienteSecundario(Integer idClienteSecundario) {
-		this.idClienteSecundario = idClienteSecundario;
-	}
+    public Integer getIdProjeto() {
+        return idProjeto;
+    }
 
-	public LocalDateTime getDhTrabalhadaInicio() {
-		return dhTrabalhadaInicio;
-	}
+    public void setIdProjeto(Integer idProjeto) {
+        this.idProjeto = idProjeto;
+    }
 
-	public void setDhTrabalhadaInicio(LocalDateTime dhTrabalhadaInicio) {
-		this.dhTrabalhadaInicio = dhTrabalhadaInicio;
-	}
+    public Integer getIdClienteSecundario() {
+        return idClienteSecundario;
+    }
 
-	public LocalDateTime getDhTrabalhadaFim() {
-		return dhTrabalhadaFim;
-	}
+    public void setIdClienteSecundario(Integer idClienteSecundario) {
+        this.idClienteSecundario = idClienteSecundario;
+    }
 
-	public void setDhTrabalhadaFim(LocalDateTime dhTrabalhadaFim) {
-		this.dhTrabalhadaFim = dhTrabalhadaFim;
-	}
+    public LocalDateTime getDhTrabalhadaInicio() {
+        return dhTrabalhadaInicio;
+    }
 
-	public String getCaminhoArquivo() {
-		return caminhoArquivo;
-	}
+    public void setDhTrabalhadaInicio(LocalDateTime dhTrabalhadaInicio) {
+        this.dhTrabalhadaInicio = dhTrabalhadaInicio;
+    }
 
-	public void setCaminhoArquivo(String caminhoArquivo) {
-		this.caminhoArquivo = caminhoArquivo;
-	}
+    public LocalDateTime getDhTrabalhadaFim() {
+        return dhTrabalhadaFim;
+    }
 
-	public String getNomeArquivo() {
-		return nomeArquivo;
-	}
+    public void setDhTrabalhadaFim(LocalDateTime dhTrabalhadaFim) {
+        this.dhTrabalhadaFim = dhTrabalhadaFim;
+    }
 
-	public void setNomeArquivo(String nomeArquivo) {
-		this.nomeArquivo = nomeArquivo;
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	public Long getTamanhoArquivo() {
-		return tamanhoArquivo;
-	}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	public void setTamanhoArquivo(Long tamanhoArquivo) {
-		this.tamanhoArquivo = tamanhoArquivo;
-	}
+    public String getCaminhoArquivo() {
+        return caminhoArquivo;
+    }
 
-	public boolean isFlArquivoPresente() {
-		return flArquivoPresente;
-	}
+    public void setCaminhoArquivo(String caminhoArquivo) {
+        this.caminhoArquivo = caminhoArquivo;
+    }
 
-	public void setFlArquivoPresente(boolean flArquivoPresente) {
-		this.flArquivoPresente = flArquivoPresente;
-	}
+    public String getNomeArquivo() {
+        return nomeArquivo;
+    }
 
-	public String getObservacao() {
-		return observacao;
-	}
+    public void setNomeArquivo(String nomeArquivo) {
+        this.nomeArquivo = nomeArquivo;
+    }
 
-	public void setObservacao(String observacao) {
-		this.observacao = observacao;
-	}
+    public Long getTamanhoArquivo() {
+        return tamanhoArquivo;
+    }
 
-	public LocalDateTime getDhCadastro() {
-		return dhCadastro;
-	}
+    public void setTamanhoArquivo(Long tamanhoArquivo) {
+        this.tamanhoArquivo = tamanhoArquivo;
+    }
 
-	public void setDhCadastro(LocalDateTime dhCadastro) {
-		this.dhCadastro = dhCadastro;
-	}
+    public boolean isFlArquivoPresente() {
+        return flArquivoPresente;
+    }
 
-	public String getHrTrabalhada() {
-		return hrTrabalhada;
-	}
+    public void setFlArquivoPresente(boolean flArquivoPresente) {
+        this.flArquivoPresente = flArquivoPresente;
+    }
 
-	public void setHrTrabalhada(String hrTrabalhada) {
-		this.hrTrabalhada = hrTrabalhada;
-	}
+    public String getObservacao() {
+        return observacao;
+    }
 
+    public void setObservacao(String observacao) {
+        this.observacao = observacao;
+    }
+
+    public LocalDateTime getDhCadastro() {
+        return dhCadastro;
+    }
+
+    public void setDhCadastro(LocalDateTime dhCadastro) {
+        this.dhCadastro = dhCadastro;
+    }
+
+    public String getHrTrabalhada() {
+        return hrTrabalhada;
+    }
+
+    public void setHrTrabalhada(String hrTrabalhada) {
+        this.hrTrabalhada = hrTrabalhada;
+    }
 }

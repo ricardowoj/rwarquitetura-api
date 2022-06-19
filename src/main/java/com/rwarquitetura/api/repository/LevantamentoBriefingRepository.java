@@ -14,5 +14,4 @@ public interface LevantamentoBriefingRepository extends JpaRepository<Levantamen
 	
 	@Query("select u from LevantamentoBriefing u where u.idProjeto = :idProjeto")
 	public List<LevantamentoBriefing> findByIdProjeto(@Param("idProjeto") Integer idProjeto);
-	
 }

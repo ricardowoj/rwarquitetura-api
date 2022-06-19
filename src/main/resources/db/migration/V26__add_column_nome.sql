@@ -1,0 +1,1 @@
+alter table rwarquitetura.tab_levantamento_briefing add column nome varchar(255)  DEFAULT NULL;
